@@ -9,15 +9,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
- * <p> Title: BaselineCalculator Class. </p>
+ * <p> Title: UserInterface Class. </p>
  * 
- * <p> Description: The user interface and business logic for this JavaFX application to 
- * establish the user interface and the business logic associated with changing the text 
+ * <p> Description: The user interface for this JavaFX application to 
+ * establish the user interface associated with changing the text 
  * fields and pressing the buttons. </p>
  * 
  * <p> Copyright: Lynn Robert Carter © 2019 </p>
  * 
  * @author Lynn Robert Carter
+ * 
+ * @author Piyush Jain
  * 
  * @version 4.00	2019-12-03 Baseline JavaFX implementation of a long integer calculator 
  * 
@@ -30,9 +32,6 @@ public class UserInterface {
 	private static double WINDOW_WIDTH;
 	
 	// These are the major application values not associated with the user interface
-	private CalculatorValue operand1;
-	private CalculatorValue operand2;
-	private CalculatorValue result;
 	private boolean operandError = false;
 	private boolean operand1Defined = false;
 	private boolean operand2Defined = false;
@@ -54,8 +53,8 @@ public class UserInterface {
 	private TextField text_Result = new TextField();
 	private Button button_Add = new Button("+");
 	private Button button_Sub = new Button("-");
-	private Button button_Mpy = new Button("×");				// The multiply symbol: \u00D7
-	private Button button_Div = new Button("÷");				// The divide symbol: \u00F7
+	private Button button_Mpy = new Button("x");				// The multiply symbol: \u00D7
+	private Button button_Div = new Button("�");				// The divide symbol: \u00F7
 	private Label label_errOperand1 = new Label("");
 	private Label label_errOperand2 = new Label("");
 	
@@ -198,8 +197,9 @@ public class UserInterface {
 			label_Result.setText("Result");							// clear the result text field
 			return;													// and return a zero value	
 		}
-		operand1 = new CalculatorValue(str);						// There is a string so try to
-		String errorString = operand1.getErrorMessage();			// make and operand out of it
+		logicalTasks.convertOperand1Logic(str);
+		// operand1 = new CalculatorValue(str);						// There is a string so try to
+		String errorString = logicalTasks.getOperand1().getErrorMessage();			// make and operand out of it
 		if (errorString.length() > 0) {								// If there is an error the
 			label_errOperand1.setText(errorString);					// returned error string is used
 			operandError = true;
@@ -229,8 +229,9 @@ public class UserInterface {
 			label_Result.setText("Result");							// clear the result text field
 			return;													// and return a zero value	
 		}
-		operand2 = new CalculatorValue(str);						// There is a string so try to
-		String errorString = operand2.getErrorMessage();			// make and operand out of it
+		logicalTasks.convertOperand2Logic(str);
+		// operand2 = new CalculatorValue(str);						// There is a string so try to
+		String errorString = logicalTasks.getOperand2().getErrorMessage();			// make and operand out of it
 		if (errorString.length() > 0) {								// If there is an error the
 			label_errOperand2.setText(errorString);					// returned error string is used
 			operandError = true;
@@ -274,10 +275,10 @@ public class UserInterface {
 		if (binaryOperandIssues()) 									// If there is an operand error
 			return;													// just return. Otherwise, reset
 		label_errOperand2.setText("");								// any second operand errors
-//		result = new CalculatorValue(operand1);						// Establish the left operand
-//		result.add(operand2);										// add the right operand to it
-		result = logicalTasks.addOperandsLogic(result, operand1, operand2);
-		String theAnswer = result.toString();						// No possible errors, so get the 
+		// result = new CalculatorValue(operand1);					// Establish the left operand
+		// result.add(operand2);									// add the right operand to it
+		logicalTasks.addOperandsLogic();
+		String theAnswer = logicalTasks.getResult().toString();		// No possible errors, so get the 
 		text_Result.setText(theAnswer);								// result, place in it the output, and
 		label_Result.setText("Sum");								// specify the result is a sum.
 	}
@@ -287,8 +288,14 @@ public class UserInterface {
 	 * 
 	 */
 	private void subOperands(){
-		label_Result.setText("Subtraction not yet implemented!");	// Replace this line with the code
-		text_Result.setText("");									// required to do subtraction
+		if (binaryOperandIssues()) {
+			return;
+		}
+		label_errOperand2.setText("");
+		logicalTasks.subOperandsLogic();
+		String theAnswer = logicalTasks.getResult().toString();
+		label_Result.setText("Difference");							// Replace this line with the code
+		text_Result.setText(theAnswer);									// required to do subtraction
 	}
 
 	/**********
@@ -296,8 +303,14 @@ public class UserInterface {
 	 * 
 	 */
 	private void mpyOperands(){
-		label_Result.setText("Multiplication not yet implemented!");// Replace this line with the code
-		text_Result.setText("");									// required to do multiplication
+		if (binaryOperandIssues()) {
+			return;
+		}
+		label_errOperand2.setText("");
+		logicalTasks.mpyOperandsLogic();
+		String theAnswer = logicalTasks.getResult().toString();
+		label_Result.setText("Product");							// Replace this line with the code
+		text_Result.setText(theAnswer);									// required to do multiplication
 	}
 
 	/**********
@@ -305,7 +318,13 @@ public class UserInterface {
 	 * 
 	 */
 	private void divOperands(){
-		label_Result.setText("Division not yet implemented!");		// Replace this line with the code
-		text_Result.setText("");									// required to do division
+		if (binaryOperandIssues()) {
+			return;
+		}
+		label_errOperand2.setText("");
+		logicalTasks.divOperandsLogic();
+		String theAnswer = logicalTasks.getResult().toString();
+		label_Result.setText("Quotient");		// Replace this line with the code
+		text_Result.setText(theAnswer);									// required to do division
 	}
 }

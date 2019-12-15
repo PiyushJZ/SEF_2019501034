@@ -14,6 +14,8 @@ import java.util.Scanner;
  * 
  * @author Lynn Robert Carter
  * 
+ * @author Piyush Jain
+ *
  * @version 4.00	2019-12-03 Baseline JavaFX implementation of a long integer calculator 
  * 
  */
@@ -172,14 +174,17 @@ public class CalculatorValue {
 	 * @param v
 	 */
 	public void sub(CalculatorValue v) {
-		errorMessage = "***Error*** Subtraction has not yet been implemented";
+		measuredValue -= v.measuredValue;
+		errorMessage = "";
 	}
 
 	public void mpy(CalculatorValue v) {
-		errorMessage = "***Error*** Multiplication has not yet been implemented";
+		measuredValue *= v.measuredValue;
+		errorMessage = "";
 	}
 
 	public void div(CalculatorValue v) {
-		errorMessage = "***Error*** Division has not yet been implemented";
+		measuredValue /= v.measuredValue;
+		errorMessage = "";
 	}
 }
