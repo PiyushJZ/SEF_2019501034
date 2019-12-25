@@ -193,18 +193,16 @@ public class UserInterface {
 		}
 	
 	private void performGo() {
-		String errMessage = InputSplitter.checkMeasuredValue(text_Operand1MeasuredValue.getText());
+		String errMessage = MeasuredValueRecognizer.checkMeasuredValue(text_Operand1MeasuredValue.getText());
 		if (errMessage != "") {
 			System.out.println(errMessage);
-			label_errOperand1MeasuredValue.setText(InputSplitter.measuredValueErrorMessage);
-			if (InputSplitter.measuredValueIndexofError <= -1) return;
-			String input = InputSplitter.measuredValueInput;
-			errMVPart1.setText(input.substring(0, InputSplitter.measuredValueIndexofError));
+			label_errOperand1MeasuredValue.setText(MeasuredValueRecognizer.measuredValueErrorMessage);
+			if (MeasuredValueRecognizer.measuredValueIndexofError <= -1) return;
+			String input = MeasuredValueRecognizer.measuredValueInput;
+			errMVPart1.setText(input.substring(0, MeasuredValueRecognizer.measuredValueIndexofError));
 			errMVPart2.setText("\u21EB");
 		}
 		else {
-			/* This is the stub for when implementing ErrorTerm recognition
-			 * 
 			errMessage = ErrorTermRecognizer.checkErrorTerm(text_Operand1ErrorTerm.getText());
 			if (errMessage != "") {
 				System.out.println(errMessage);
@@ -214,7 +212,6 @@ public class UserInterface {
 				errETPart1.setText(input.substring(0, ErrorTermRecognizer.errorTermIndexofError));
 				errETPart2.setText("\u21EB");
 			}
-			*/
 		}
 	}
 }

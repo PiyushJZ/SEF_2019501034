@@ -1,10 +1,8 @@
-package userInterfaceTestbed;
+package baselineLongCalculator;
 
 
-public class InputSplitter {
-	/**
-	 * <p> Title: FSM-translated ErrorTermRecognizer. </p>
-	 * 
+public class MeasuredValueRecognizer {
+	/* 
 	 * <p> Description: A demonstration of the mechanical translation of Finite State Machine 
 	 * diagram into an executable Java program using the Measured Value Recognizer. The code 
 	 * detailed design is based on a while loop with a select list</p>
@@ -12,8 +10,6 @@ public class InputSplitter {
 	 * <p> Copyright: Lynn Robert Carter © 2018 </p>
 	 * 
 	 * @author Lynn Robert Carter
-	 * 
-	 * @author Piyush Jain
 	 * 
 	 * @version 0.00		2018-02-04	Initial baseline 
 	 * 
@@ -117,10 +113,14 @@ public class InputSplitter {
 				finalState = false;
 				
 				// If the current character is in the range from 1 to 9, it transitions to state 1
-				if (currentChar != ' ') {
+				if (currentChar == '.') {
+					nextState = 3;
+					break;
+				}
+				else if (currentChar >= '0' && currentChar <= '9') {
 					nextState = 1;
 					break;
-				}				
+				}
 				// If it is none of those characters, the FSM halts
 				else 
 					running = false;
@@ -136,14 +136,16 @@ public class InputSplitter {
 				
 				// In state 1, if the character is 0 through 9, it is accepted and we stay in this
 				// state
-				if (currentChar != ' ') {
+				if (currentChar == '.') {
+					nextState = 2;
+					break;
+				}
+				else if (currentChar >= '0' && currentChar <= '9') {
 					nextState = 1;
 					break;
 				}
-				
-				// If the current character is a decimal point, it transitions to state 2
-				else if (currentChar == ' ') {
-					nextState = 2;
+				else if (currentChar == 'e' || currentChar == 'E') {
+					nextState = 5;
 					break;
 				}
 				// If it is none of those characters, the FSM halts
@@ -160,17 +162,14 @@ public class InputSplitter {
 				finalState = true;
 				
 				// If the current character is in the range from 1 to 9, it transitions to state 1
-				if (currentChar != ' ') {
+				if (currentChar >= '0' && currentChar <= '9') {
 					nextState = 2;
 					break;
 				}
-				// If the current character is an 'E' or 'e", it transitions to state 5
-				else if (currentChar == ' ') {
-					nextState = 3;
+				else if (currentChar == 'e' || currentChar == 'E') {
+					nextState = 5;
 					break;
 				}
-
-				// If it is none of those characters, the FSM halts
 				else 
 					running = false;
 
@@ -181,22 +180,95 @@ public class InputSplitter {
 				// State 3 has only one valid transition.  It is addressed by an if statement.
 				
 				// This is not a final state
-				finalState = true;			
+				finalState = false;			
 
 				// If the current character is in the range from 1 to 9, it transitions to state 1
-				if (currentChar != ' ') {
-					nextState = 3;
+				if (currentChar >= '0' && currentChar <= '9') {
+					nextState = 4;
 					break;
 				}
-
 				// If it is none of those characters, the FSM halts
 				else 
 					running = false;
 
 				// The execution of this state is finished
 				break;
+			case 4:
+				// State 3 has only one valid transition.  It is addressed by an if statement.
+				
+				// This is not a final state
+				finalState = true;			
+	
+				// If the current character is in the range from 1 to 9, it transitions to state 1
+				if (currentChar >= '0' & currentChar <= '9') {
+					nextState = 4;
+					break;
+				}
+				else if (currentChar == 'e' || currentChar == 'E') {
+					nextState = 5;
+					break;
+				}
+				// If it is none of those characters, the FSM halts
+				else 
+					running = false;
+	
+				// The execution of this state is finished
+				break;
+			case 5:
+				// State 3 has only one valid transition.  It is addressed by an if statement.
+				
+				// This is not a final state
+				finalState = false;			
+	
+				// If the current character is in the range from 1 to 9, it transitions to state 1
+				if (currentChar >= '0' && currentChar <= '9') {
+					nextState = 7;
+					break;
+				}
+				else if (currentChar == '+' || currentChar == '-') {
+					nextState = 6;
+					break;
+				}
+				// If it is none of those characters, the FSM halts
+				else 
+					running = false;
+	
+				// The execution of this state is finished
+				break;
+			case 6:
+				// State 3 has only one valid transition.  It is addressed by an if statement.
+				
+				// This is not a final state
+				finalState = false;			
+	
+				// If the current character is in the range from 1 to 9, it transitions to state 1
+				if (currentChar >= '0' && currentChar <= '9') {
+					nextState = 7;
+					break;
+				}
+				// If it is none of those characters, the FSM halts
+				else 
+					running = false;
+	
+				// The execution of this state is finished
+				break;
+			case 7:
+				// State 3 has only one valid transition.  It is addressed by an if statement.
+				
+				// This is not a final state
+				finalState = true;			
+	
+				// If the current character is in the range from 1 to 9, it transitions to state 1
+				if (currentChar >= '0' && currentChar <= '9') {
+					nextState = 7;
+					break;
+				}
+				else 
+					running = false;
+	
+				// The execution of this state is finished
+				break;
 			}
-			
 			if (running) {
 				displayDebuggingInfo();
 				// When the processing of a state has finished, the FSM proceeds to the next character
@@ -211,7 +283,6 @@ public class InputSplitter {
 			// Should the FSM get here, the loop starts again
 
 		}
-
 		System.out.println("The loop has ended.");
 
 		measuredValueIndexofError = currentCharNdx;		// Copy the index of the current character;
@@ -223,8 +294,8 @@ public class InputSplitter {
 		case 0:
 			// State 0 is not a final state, so we can return a very specific error message
 			measuredValueIndexofError = currentCharNdx;		// Copy the index of the current character;
-			measuredValueErrorMessage = "The first value must not be empty.";
-			return "The first value must not be empty.";
+			measuredValueErrorMessage = "The first character must be a digit or a decimal point.";
+			return "The first character must be a digit or a decimal point.";
 
 		case 1:
 			// State 1 is a final state, so we must see if the whole string has been consumed.
@@ -232,7 +303,8 @@ public class InputSplitter {
 				// If not all of the string has been consumed, we point to the current character
 				// in the input line and specify what that character must be in order to move
 				// forward.
-				measuredValueErrorMessage = "Error in State 1.\n";
+				measuredValueErrorMessage = "This character may only be an \"E\", an \"e\", a digit, "
+						+ "a \".\", or it must be the end of the input.\n";
 				return measuredValueErrorMessage + displayInput(input, currentCharNdx);
 			}
 			else {
@@ -242,33 +314,49 @@ public class InputSplitter {
 			}
 
 		case 2:
-			// State 1 is a final state, so we must see if the whole string has been consumed.
+		case 4:
+			// States 2 and 4 are the same.  They are both final states with only one possible
+			// transition forward, if the next character is an E or an e.
+//			System.out.println("hii");
 			if (currentCharNdx<input.length()) {
-			// If not all of the string has been consumed, we point to the current character
-			// in the input line and specify what that character must be in order to move
-			// forward.
-			measuredValueErrorMessage = "Error in State 2.\n";
-			return measuredValueErrorMessage + displayInput(input, currentCharNdx);
+				measuredValueErrorMessage = "This character may only be an \"E\", an \"e\", or it must"
+						+ " be the end of the input.\n";
+				return measuredValueErrorMessage + displayInput(input, currentCharNdx);
 			}
+			// If there is no more input, the input was recognized.
 			else {
-			measuredValueIndexofError = -1;
-			measuredValueErrorMessage = "";
-			return measuredValueErrorMessage;
+				measuredValueIndexofError = -1;
+				measuredValueErrorMessage = "";
+				return measuredValueErrorMessage;
 			}
 		case 3:
-			// State 1 is a final state, so we must see if the whole string has been consumed.
-			if (currentCharNdx<input.length()) {
-			// If not all of the string has been consumed, we point to the current character
-			// in the input line and specify what that character must be in order to move
-			// forward.
-			measuredValueErrorMessage = "Error in State 3.\n";
+		case 6:
+			// States 3, and 6 are the same. None of them are final states and in order to
+			// move forward, the next character must be a digit.
+			measuredValueErrorMessage = "This character may only be a digit.\n";
 			return measuredValueErrorMessage + displayInput(input, currentCharNdx);
+
+		case 7:
+			// States 7 is similar to states 3 and 6, but it is a final state, so it must be
+			// processed differently. If the next character is not a digit, the FSM stops with an
+			// error.  We must see here if there are no more characters. If there are no more
+			// characters, we accept the input, otherwise we return an error
+			if (currentCharNdx<input.length()) {
+				measuredValueErrorMessage = "This character may only be a digit.\n";
+				return measuredValueErrorMessage + displayInput(input, currentCharNdx);
 			}
 			else {
-			measuredValueIndexofError = -1;
-			measuredValueErrorMessage = "";
-			return measuredValueErrorMessage;
+				measuredValueIndexofError = -1;
+				measuredValueErrorMessage = "";
+				return measuredValueErrorMessage;
 			}
+
+		case 5:
+			// State 5 is not a final state.  In order to move forward, the next character must be
+			// a digit or a plus or a minus character.
+			measuredValueErrorMessage = "This character may only be a digit, a plus, or minus "
+					+ "character.\n";
+			return measuredValueErrorMessage + displayInput(input, currentCharNdx);
 		default:
 			return "";
 		}
