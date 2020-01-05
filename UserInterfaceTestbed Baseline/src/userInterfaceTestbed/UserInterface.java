@@ -131,7 +131,7 @@ public class UserInterface {
 		
 		// Place all of the just-initialized GUI elements into the pane
 		theRoot.getChildren().addAll(label_ApplicationTitle, label_Operand1, text_Operand1MeasuredValue, 
-				text_Operand1ErrorTerm, label_errOperand1MeasuredValue, label_errOperand1ErrorTerm, 
+				text_Operand1ErrorTerm, label_errOperand1MeasuredValue, label_errOperand1ErrorTerm,
 				button_Go, errMeasuredValue, errErrorTerm);
 
 	}
